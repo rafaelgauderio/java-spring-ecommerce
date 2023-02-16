@@ -16,7 +16,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(unique = true) // campo não pode ser repetir
     private String email;
+    @Column (unique =true) // campo não pode se repetir
     private String CPF_CNPJ;
     private String telefone;
     private LocalDate dataNascimento;
