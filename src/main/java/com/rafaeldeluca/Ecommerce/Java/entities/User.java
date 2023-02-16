@@ -100,11 +100,13 @@ public class User {
         return pedidos;
     }
 
-    // não se usa método set para coleção
-    // vai adicionando ou removendo elemento da coleção
+    /* não se usa método set para coleção
+     * vai adicionando ou removendo elemento da coleção
+     *
     public void setPedidos(List<Order> pedidos) {
         this.pedidos = pedidos;
     }
+     */
 
     @Override
     public boolean equals(Object o) {
