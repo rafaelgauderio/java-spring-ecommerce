@@ -3,6 +3,8 @@ package com.rafaeldeluca.Ecommerce.Java.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 //mapeamentos da jpa
@@ -20,10 +22,14 @@ public class User {
     private LocalDate dataNascimento;
     private String senha;
 
+    @OneToMany(mappedBy="cliente")
+    private List<Order> pedidos = new ArrayList<Order>();
+
     public User () {
 
     }
 
+    // não se coloca coleção no construtor
     public User(Long id, String nome, String email, String CPF_CNPJ, String telefone, LocalDate dataNascimento, String senha) {
         this.id = id;
         this.nome = nome;
@@ -88,6 +94,16 @@ public class User {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<Order> getPedidos() {
+        return pedidos;
+    }
+
+    // não se usa método set para coleção
+    // vai adicionando ou removendo elemento da coleção
+    public void setPedidos(List<Order> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override
