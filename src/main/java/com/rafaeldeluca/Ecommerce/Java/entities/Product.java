@@ -23,9 +23,13 @@ public class Product {
     // deve-se usar o tipo Set e não List. Colletion set não aceita valores repetidos do par key, value
     @ManyToMany
     @JoinTable(name = "tb_product_category",
-    joinColumns = @JoinColumn(name = "product_id"),
-    inverseJoinColumns = @JoinColumn(name="category_id"))
+    joinColumns = @JoinColumn(name = "produto_id"),
+    inverseJoinColumns = @JoinColumn(name="categoria_id"))
     private Set<Category> categorias = new HashSet<Category>();
+
+    //acessar os itens do pedido de cada produto
+    @OneToMany(mappedBy = "id.produto")
+    private Set<OrderItem> items = new HashSet<OrderItem>();
 
 
     public Product () {
@@ -88,6 +92,5 @@ public class Product {
     public void setCategorias(Set<Category> categorias) {
         this.categorias = categorias;
     }
-
      */
 }

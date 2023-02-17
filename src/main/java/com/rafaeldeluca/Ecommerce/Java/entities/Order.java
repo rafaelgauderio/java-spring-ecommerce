@@ -4,6 +4,8 @@ import com.rafaeldeluca.Ecommerce.Java.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="tb_order")
@@ -24,6 +26,9 @@ public class Order {
 
     @OneToOne (mappedBy = "pedido", cascade = CascadeType.ALL)
     private Payment pagamento;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<OrderItem> items = new HashSet<OrderItem>();
 
     public Order () {
 
