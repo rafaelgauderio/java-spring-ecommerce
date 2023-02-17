@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -81,4 +82,24 @@ public class Order {
     public void setPagamento(Payment pagamento) {
         this.pagamento = pagamento;
     }
+
+    // apartir de um pedido acessar os itens do pedido
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    // coleção não se usa set
+    /*
+    public void setItems(Set<OrderItem> items) {
+        this.items = items;
+    */
+
+    // apartir de um pedido acessar os produtos acessociados a aquele pedido
+    // converter o elemento do tipo OrdemItem para Product
+    public List<Product> getProducts () {
+        return items.stream().map( item -> item.getProduto()).toList();
+    }
+
+
+
 }

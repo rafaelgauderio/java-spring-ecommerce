@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -93,4 +94,19 @@ public class Product {
         this.categorias = categorias;
     }
      */
+
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    /* não se usa método set para coleção
+    public void setItems(Set<OrderItem> items) {
+        this.items = items;
+    }
+     */
+    // a partir de um produto acessar todos os pedidos
+    // acessar apenas o pedido que está dentro do ItensDoPedido
+    public List<Order> getOrders () {
+        return items.stream().map(itemPedido -> itemPedido.getPedido()).toList();
+    }
 }
