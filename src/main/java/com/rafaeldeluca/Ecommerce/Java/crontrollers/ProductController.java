@@ -5,10 +5,7 @@ import com.rafaeldeluca.Ecommerce.Java.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +32,16 @@ public class ProductController {
         // por default retorna uma página de 20 elementos
         return listaPaginadaDeproductDTO;
     }
+
+    @PostMapping
+    public ProductDTO inserir (@RequestBody ProductDTO dto) {
+        // ao receber um objeto json do frontend o framework vai instanciar um ProdutoDTO
+        // annotation @RequestBody, o corpo da requisição rebida vao instanciar um dto correpondente
+        dto = servico.inserir(dto);
+        return dto;
+
+    }
+
+
 
 }

@@ -35,4 +35,20 @@ public class ProductService {
         // e depois de volta para lista
         return listaPaginadaDeProdutos.map(produto-> new ProductDTO(produto));
     }
+
+    @Transactional(readOnly = false)
+    public ProductDTO inserir(ProductDTO dto) {
+        // preparar um entidade do tipo produto para receber o dto que veio lá do controlador
+        Product produto = new Product();
+        produto.setNome(dto.getNome());
+        produto.setDescricao(dto.getDescricao());
+        produto.setPreco(dto.getPreco());
+        produto.setImgUrl(dto.getImgUrl());
+
+        produto = repositorio.save(produto);
+        return new ProductDTO(produto);
+
+    }
+
+
 }
