@@ -4,13 +4,11 @@ import com.rafaeldeluca.Ecommerce.Java.dto.ProductDTO;
 import com.rafaeldeluca.Ecommerce.Java.entities.Product;
 import com.rafaeldeluca.Ecommerce.Java.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
-import java.awt.print.Printable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +28,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> bucarTodos () {
-        List<Product> listaDeProdutos = repositorio.findAll();
-        // converter lista de Produto par  Lista de ProdutoDTO
-        return listaDeProdutos.stream().map(produto-> new ProductDTO(produto)).toList();
+    public Page<ProductDTO> bucarTodos (Pageable paginavel) {
+        Page<Product> listaPaginadaDeProdutos = repositorio.findAll(paginavel);
+        // converter Page de Produto para  page ProdutoDTO
+        // page já é um stream do java. Pode chamar direto a aplica função labda sem ter que conveter para stream
+        // e depois de volta para lista
+        return listaPaginadaDeProdutos.map(produto-> new ProductDTO(produto));
     }
 }
