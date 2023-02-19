@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.ListResourceBundle;
 import java.util.Optional;
 
 // um controladdor implementa um recurso na API REST
@@ -26,6 +28,12 @@ public class ProductController {
     public ProductDTO buscarPorId (@PathVariable Long id){
         ProductDTO produtoDTO = servico.buscarPorId(id);
         return produtoDTO;
+    }
+
+    @GetMapping
+    public List<ProductDTO> buscarTodos () {
+        List<ProductDTO> listaDeproductDTO = servico.bucarTodos();
+        return listaDeproductDTO;
     }
 
 }

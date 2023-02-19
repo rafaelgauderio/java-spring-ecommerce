@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +29,10 @@ public class ProductService {
         return produtoDTO;
     }
 
-
+    @Transactional(readOnly = true)
+    public List<ProductDTO> bucarTodos () {
+        List<Product> listaDeProdutos = repositorio.findAll();
+        // converter lista de Produto par  Lista de ProdutoDTO
+        return listaDeProdutos.stream().map(produto-> new ProductDTO(produto)).toList();
+    }
 }
