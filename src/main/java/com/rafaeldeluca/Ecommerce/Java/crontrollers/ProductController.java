@@ -47,4 +47,10 @@ public class ProductController {
         // boa prática, no cabeçalho da resposta vai ter um link com o recurso criado
         return ResponseEntity.created(uri).body(dto);
     }
+
+    @PutMapping(value ="/{id}")
+    public ResponseEntity<ProductDTO> atualizar(@PathVariable Long id, @RequestBody ProductDTO dto) {
+        dto = servico.atualizar(id,dto);
+        return ResponseEntity.ok(dto);
+    }
 }

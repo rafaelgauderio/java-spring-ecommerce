@@ -40,15 +40,25 @@ public class ProductService {
     public ProductDTO inserir(ProductDTO dto) {
         // preparar um entidade do tipo produto para receber o dto que veio lá do controlador
         Product produto = new Product();
+        copiardeDToParaEntidade(dto,produto);
+        produto = repositorio.save(produto);
+        return new ProductDTO(produto);
+    }
+    @Transactional(readOnly = false)
+    public ProductDTO atualizar(Long id, ProductDTO dto) {
+        // operação getReferenceById não toca o database, somente prepara o objeto monitorado pela jpa
+        // ao se instanciar um objeto com new, ele não está monitorado pela jpa
+        Product produto = repositorio.getReferenceById(id);
+        copiardeDToParaEntidade(dto,produto);
+        produto = repositorio.save(produto);
+        return new ProductDTO(produto);
+    }
+
+    private void copiardeDToParaEntidade(ProductDTO dto, Product produto) {
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco());
         produto.setImgUrl(dto.getImgUrl());
-
-        produto = repositorio.save(produto);
-        return new ProductDTO(produto);
-
     }
-
 
 }
