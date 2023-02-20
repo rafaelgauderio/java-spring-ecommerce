@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 // um controladdor implementa um recurso na API REST
 // funcionalidades de um sistema web são organizadas em forma de recursos URL
@@ -52,5 +51,13 @@ public class ProductController {
     public ResponseEntity<ProductDTO> atualizar(@PathVariable Long id, @RequestBody ProductDTO dto) {
         dto = servico.atualizar(id,dto);
         return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        // retorna uma resposta com o corpo vazio
+        servico.detelar(id);
+        // resposta que da certo e não tem corpo retorna código http 204
+        return ResponseEntity.noContent().build();
     }
 }

@@ -54,6 +54,13 @@ public class ProductService {
         return new ProductDTO(produto);
     }
 
+    @Transactional(readOnly = false)
+    public void detelar(Long id) {
+        Product produto = repositorio.findById(id).get();
+        repositorio.delete(produto); // deletar informando a entidade
+        //repositorio.deleteById(id); deletar informar o id
+    }
+
     private void copiardeDToParaEntidade(ProductDTO dto, Product produto) {
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
