@@ -3,6 +3,7 @@ package com.rafaeldeluca.Ecommerce.Java.services;
 import com.rafaeldeluca.Ecommerce.Java.dto.ProductDTO;
 import com.rafaeldeluca.Ecommerce.Java.entities.Product;
 import com.rafaeldeluca.Ecommerce.Java.repositories.ProductRepository;
+import com.rafaeldeluca.Ecommerce.Java.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,8 @@ public class ProductService {
     public ProductDTO buscarPorId (Long id) {
         // para buscar direto do banco de dados precisa do repository
         Optional<Product> resultado = repositorio.findById(id);
-        Product produto = resultado.get();
+        Product produto = resultado.orElseThrow(
+                () -> new ResourceNotFoundException("Recurso não foi encontrado!"));
         ProductDTO produtoDTO = new ProductDTO(produto);
         return produtoDTO;
     }
