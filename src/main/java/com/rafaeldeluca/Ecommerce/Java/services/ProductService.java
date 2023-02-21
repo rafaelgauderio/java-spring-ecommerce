@@ -3,14 +3,19 @@ package com.rafaeldeluca.Ecommerce.Java.services;
 import com.rafaeldeluca.Ecommerce.Java.dto.ProductDTO;
 import com.rafaeldeluca.Ecommerce.Java.entities.Product;
 import com.rafaeldeluca.Ecommerce.Java.repositories.ProductRepository;
+import com.rafaeldeluca.Ecommerce.Java.services.exceptions.DataBaseIntegrityException;
 import com.rafaeldeluca.Ecommerce.Java.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -56,15 +61,21 @@ public class ProductService {
             produto = repositorio.save(produto);
             return new ProductDTO(produto);
         } catch (EntityNotFoundException excecao) {
-            throw new ResourceNotFoundException("Recurso não foi encontrado!");
+            throw new ResourceNotFoundException("Recurso não foi encontrado para o id de número " + id);
         }
     }
 
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, propagation = Propagation.SUPPORTS)
     public void detelar(Long id) {
-        Product produto = repositorio.findById(id).get();
-        repositorio.delete(produto); // deletar informando a entidade
-        //repositorio.deleteById(id); deletar informar o id
+        try {
+            Product produto = repositorio.findById(id).get();
+            repositorio.delete(produto); // deletar informando a entidade
+            //repositorio.deleteById(id); deletar informar o id
+        } catch (NoSuchElementException excecao) {
+            throw new ResourceNotFoundException("Recurso não encontrado para o id de número " + id);
+        } catch (DataIntegrityViolationException excecao) {
+            throw new DataBaseIntegrityException("A deleção não pode ser efetuada, pois viola a integridade referencial de dados.");
+        }
     }
 
     private void copiardeDToParaEntidade(ProductDTO dto, Product produto) {
