@@ -4,12 +4,21 @@ import com.rafaeldeluca.Ecommerce.Java.entities.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.*;
 
+
+// validações Bean Validation sempre no DTO. DTO traféga na web.
 public class ProductDTO {
 
     private Long id;
+
+    @Size(min=3, max=70, message = "Nome tem que ter entre 3 e 70 caracteres")
+    @NotBlank(message = "Campo nome é obrigatório")
     private String nome;
+    @Size(min=10, max = 300, message = "Descrição tem que ter entre 10 e 300 caracteres")
+    @NotBlank(message = "Campo descrição é obrigatório")
     private String descricao;
+    @Positive (message = "O preço do produto deve ser maior que zero")
     private Double preco;
     private String imgUrl;
 

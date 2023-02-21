@@ -2,6 +2,7 @@ package com.rafaeldeluca.Ecommerce.Java.crontrollers;
 
 import com.rafaeldeluca.Ecommerce.Java.dto.ProductDTO;
 import com.rafaeldeluca.Ecommerce.Java.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> inserir (@RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> inserir (@Valid @RequestBody ProductDTO dto) {
         // ao receber um objeto json do frontend o framework vai instanciar um ProdutoDTO
         // annotation @RequestBody, o corpo da requisição rebida vao instanciar um dto correpondente
         dto = servico.inserir(dto);
@@ -48,7 +49,7 @@ public class ProductController {
     }
 
     @PutMapping(value ="/{id}")
-    public ResponseEntity<ProductDTO> atualizar(@PathVariable Long id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> atualizar(@PathVariable Long id,@Valid @RequestBody ProductDTO dto) {
         dto = servico.atualizar(id,dto);
         return ResponseEntity.ok(dto);
     }

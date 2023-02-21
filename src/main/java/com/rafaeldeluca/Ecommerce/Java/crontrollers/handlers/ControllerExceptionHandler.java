@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
 
+// na classe com annotation @ControllerAdvice, devemos definir tratameto globais para exceções específicas
+// assim não precisamos colocar blocos try-catch em várias partes do código.
 @ControllerAdvice
 public class ControllerExceptionHandler {
     // handler vão ser as classes de manipulação
