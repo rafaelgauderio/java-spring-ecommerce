@@ -4,13 +4,13 @@ import com.rafaeldeluca.Ecommerce.Java.dto.ProductDTO;
 import com.rafaeldeluca.Ecommerce.Java.entities.Product;
 import com.rafaeldeluca.Ecommerce.Java.repositories.ProductRepository;
 import com.rafaeldeluca.Ecommerce.Java.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,10 +50,14 @@ public class ProductService {
     public ProductDTO atualizar(Long id, ProductDTO dto) {
         // operação getReferenceById não toca o database, somente prepara o objeto monitorado pela jpa
         // ao se instanciar um objeto com new, ele não está monitorado pela jpa
-        Product produto = repositorio.getReferenceById(id);
-        copiardeDToParaEntidade(dto,produto);
-        produto = repositorio.save(produto);
-        return new ProductDTO(produto);
+        try {
+            Product produto = repositorio.getReferenceById(id);
+            copiardeDToParaEntidade(dto, produto);
+            produto = repositorio.save(produto);
+            return new ProductDTO(produto);
+        } catch (EntityNotFoundException excecao) {
+            throw new ResourceNotFoundException("Recurso não foi encontrado!");
+        }
     }
 
     @Transactional(readOnly = false)
